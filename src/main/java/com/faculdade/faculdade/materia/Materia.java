@@ -14,7 +14,7 @@ public class Materia {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_professor")
+    @JoinColumn(name = "id_professor", referencedColumnName = "id")
     private Professor professor;
 
     @Column(name = "nome")

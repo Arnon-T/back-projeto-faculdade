@@ -35,6 +35,14 @@ public class Aluno {
         this.endereco = endereco;
     }
 
+    public Aluno(long id, String nome, int telefone, String email, String endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.endereco = endereco;
+    }
+
     public long getId() {
         return id;
     }

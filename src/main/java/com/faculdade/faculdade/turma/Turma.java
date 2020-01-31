@@ -5,8 +5,7 @@ import com.faculdade.faculdade.materia.Materia;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "turma")
@@ -26,17 +25,17 @@ public class Turma {
     private LocalDate ano;
 
     @ManyToOne
-    @JoinColumn(name = "id_aluno")
-    private Aluno aluno;
+    @JoinTable(name = "turma_aluno", joinColumns = @JoinColumn(name = "id_aluno"), inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<Aluno> aluno;
 
     @ManyToMany
     @JoinTable(name = "turma_materia", joinColumns = @JoinColumn(name = "turma_id"), inverseJoinColumns = @JoinColumn(name = "materia_id"))
-    private Set<Materia> materia = new HashSet<>();
+    private List<Materia> materia;
 
     public Turma() {
     }
 
-    public Turma(long id, String sala, String codigo, LocalDate ano, Aluno aluno, Set<Materia> materia) {
+    public Turma(long id, String sala, String codigo, LocalDate ano, List<Aluno> aluno, List<Materia> materia) {
         this.id = id;
         this.sala = sala;
         this.codigo = codigo;
@@ -45,7 +44,7 @@ public class Turma {
         this.materia = materia;
     }
 
-    public Turma(String sala, String codigo, LocalDate ano, Aluno aluno, Set<Materia> materia) {
+    public Turma(String sala, String codigo, LocalDate ano, List<Aluno> aluno, List<Materia> materia) {
         this.sala = sala;
         this.codigo = codigo;
         this.ano = ano;
@@ -85,19 +84,19 @@ public class Turma {
         this.ano = ano;
     }
 
-    public Aluno getAluno() {
+    public List<Aluno> getAluno() {
         return aluno;
     }
 
-    public void setAluno(Aluno aluno) {
+    public void setAluno(List<Aluno> aluno) {
         this.aluno = aluno;
     }
 
-    public Set<Materia> getMateria() {
+    public List<Materia> getMateria() {
         return materia;
     }
 
-    public void setMateria(Set<Materia> materia) {
+    public void setMateria(List<Materia> materia) {
         this.materia = materia;
     }
 }
