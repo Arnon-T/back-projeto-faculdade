@@ -96,7 +96,7 @@ public class ProfessorDTO {
                 professor.getTelefone(),
                 professor.getEmail(),
                 professor.getEndereco(),
-                professor.getMateria().stream().map(Materia::getId).collect(Collectors.toList())
+                professor.getListMateria().stream().map(Materia::getId).collect(Collectors.toList())
         );
     }
 }

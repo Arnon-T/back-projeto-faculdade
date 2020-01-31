@@ -24,7 +24,7 @@ public class Turma {
     @Column(name = "ano")
     private LocalDate ano;
 
-    @ManyToOne
+    @OneToMany
     @JoinTable(name = "turma_aluno", joinColumns = @JoinColumn(name = "id_aluno"), inverseJoinColumns = @JoinColumn(name = "id"))
     private List<Aluno> aluno;
 
