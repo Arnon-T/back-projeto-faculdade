@@ -1,12 +1,9 @@
 package com.faculdade.faculdade.professor;
 
-import com.faculdade.faculdade.materia.Materia;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProfessorDTO {
 
@@ -24,21 +21,19 @@ public class ProfessorDTO {
     public ProfessorDTO() {
     }
 
-    public ProfessorDTO(String nome,int telefone, String email, String endereco, List<Long> listIdMateria) {
+    public ProfessorDTO(String nome,int telefone, String email, String endereco) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.listIdMateria = listIdMateria;
     }
 
-    public ProfessorDTO(Long id, String nome, int telefone, String email, String endereco, List<Long> listIdMateria) {
+    public ProfessorDTO(Long id, String nome, int telefone, String email, String endereco) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.listIdMateria = listIdMateria;
     }
 
     public Long getId() {
@@ -81,22 +76,13 @@ public class ProfessorDTO {
         this.endereco = endereco;
     }
 
-    public List<Long> getListIdMateria() {
-        return listIdMateria;
-    }
-
-    public void setListIdMateria(List<Long> listIdMateria) {
-        this.listIdMateria = listIdMateria;
-    }
-
     public static ProfessorDTO of(Professor professor){
         return new ProfessorDTO(
                 professor.getId(),
                 professor.getNome(),
                 professor.getTelefone(),
                 professor.getEmail(),
-                professor.getEndereco(),
-                professor.getListMateria().stream().map(Materia::getId).collect(Collectors.toList())
+                professor.getEndereco()
         );
     }
 }

@@ -12,7 +12,7 @@ public class Faculdade {
     private Long id;
 
     @Column(name = "cnpj", nullable = false)
-    private int cnpj;
+    private String cnpj;
 
     @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
@@ -26,7 +26,7 @@ public class Faculdade {
     public Faculdade() {
     }
 
-    public Faculdade(int cnpj, String razaoSocial, String endereco, int telefone) {
+    public Faculdade(String cnpj, String razaoSocial, String endereco, int telefone) {
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.endereco = endereco;
@@ -41,11 +41,11 @@ public class Faculdade {
         this.id = id;
     }
 
-    public int getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(int cnpj) {
+    public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 

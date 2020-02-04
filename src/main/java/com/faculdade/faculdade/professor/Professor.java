@@ -1,10 +1,7 @@
 package com.faculdade.faculdade.professor;
 
-import com.faculdade.faculdade.materia.Materia;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.List;
 
 @Entity
 @Table(name = "professor")
@@ -27,29 +24,22 @@ public class Professor {
     @Column(name = "endereco")
     private String endereco;
 
-    @OneToMany
-    @JoinTable(name = "turma_materia", joinColumns = {@JoinColumn(name = "id_aluno", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
-    private List<Materia> listMateria;
-
     public Professor() {
     }
 
-    public Professor(String nome, int telefone, String email, String endereco, List<Materia> listMateria) {
+    public Professor(String nome, int telefone, String email, String endereco) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.listMateria = listMateria;
     }
 
-    public Professor(long id, String nome, int telefone, String email, String endereco, List<Materia> listMateria) {
+    public Professor(long id, String nome, int telefone, String email, String endereco) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.listMateria = listMateria;
     }
 
     public long getId() {
@@ -92,11 +82,4 @@ public class Professor {
         this.endereco = endereco;
     }
 
-    public List<Materia> getListMateria() {
-        return listMateria;
-    }
-
-    public void setListMateria(List<Materia> listMateria) {
-        this.listMateria = listMateria;
-    }
 }

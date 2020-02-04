@@ -8,7 +8,7 @@ public class FaculdadeDTO {
     private long id;
     @CNPJ
     @NotNull(message = "O CNPJ não deve ser nulo.")
-    private int cnpj;
+    private String cnpj;
     @NotNull(message = "A razão social não deve ser nula.")
     private String razaoSocial;
     @NotNull(message = "O endereço não deve ser nulo.")
@@ -19,14 +19,14 @@ public class FaculdadeDTO {
     public FaculdadeDTO() {
     }
 
-    public FaculdadeDTO(int cnpj, String razaoSocial, String endereco, int telefone) {
+    public FaculdadeDTO(String cnpj, String razaoSocial, String endereco, int telefone) {
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.endereco = endereco;
         this.telefone = telefone;
     }
 
-    public FaculdadeDTO(long id, int cnpj, String razaoSocial, String endereco, int telefone) {
+    public FaculdadeDTO(long id, String cnpj, String razaoSocial, String endereco, int telefone) {
         this.id = id;
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
@@ -42,11 +42,11 @@ public class FaculdadeDTO {
         this.id = id;
     }
 
-    public int getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(int cnpj) {
+    public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 

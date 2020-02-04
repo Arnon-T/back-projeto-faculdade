@@ -24,32 +24,23 @@ public class Turma {
     @Column(name = "ano")
     private LocalDate ano;
 
-    @OneToMany
-    @JoinTable(name = "turma_aluno", joinColumns = @JoinColumn(name = "id_aluno"), inverseJoinColumns = @JoinColumn(name = "id"))
-    private List<Aluno> aluno;
+    @ManyToMany
+    @JoinTable(name = "turma_aluno", joinColumns = {@JoinColumn(name = "id_turma")}, inverseJoinColumns = {@JoinColumn(name = "id_aluno")})
+    private List<Aluno> listAlunos;
 
     @ManyToMany
-    @JoinTable(name = "turma_materia", joinColumns = @JoinColumn(name = "turma_id"), inverseJoinColumns = @JoinColumn(name = "materia_id"))
-    private List<Materia> materia;
+    @JoinTable(name = "turma_materia", joinColumns = @JoinColumn(name = "id_turma"), inverseJoinColumns = @JoinColumn(name = "id_materia"))
+    private List<Materia> listMaterias;
 
     public Turma() {
-    }
-
-    public Turma(long id, String sala, String codigo, LocalDate ano, List<Aluno> aluno, List<Materia> materia) {
-        this.id = id;
-        this.sala = sala;
-        this.codigo = codigo;
-        this.ano = ano;
-        this.aluno = aluno;
-        this.materia = materia;
     }
 
     public Turma(String sala, String codigo, LocalDate ano, List<Aluno> aluno, List<Materia> materia) {
         this.sala = sala;
         this.codigo = codigo;
         this.ano = ano;
-        this.aluno = aluno;
-        this.materia = materia;
+        this.listAlunos = aluno;
+        this.listMaterias = materia;
     }
 
     public long getId() {
@@ -84,19 +75,19 @@ public class Turma {
         this.ano = ano;
     }
 
-    public List<Aluno> getAluno() {
-        return aluno;
+    public List<Aluno> getListAlunos() {
+        return listAlunos;
     }
 
-    public void setAluno(List<Aluno> aluno) {
-        this.aluno = aluno;
+    public void setListAlunos(List<Aluno> listAlunos) {
+        this.listAlunos = listAlunos;
     }
 
-    public List<Materia> getMateria() {
-        return materia;
+    public List<Materia> getListMaterias() {
+        return listMaterias;
     }
 
-    public void setMateria(List<Materia> materia) {
-        this.materia = materia;
+    public void setListMaterias(List<Materia> listMaterias) {
+        this.listMaterias = listMaterias;
     }
 }

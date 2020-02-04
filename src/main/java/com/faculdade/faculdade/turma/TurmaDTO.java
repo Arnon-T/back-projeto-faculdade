@@ -13,8 +13,8 @@ public class TurmaDTO {
     private String sala;
     private String codigo;
     private LocalDate ano;
-    private List<Long> idAluno;
-    private List<Long> idMateria;
+    private List<Long> idAlunos;
+    private List<Long> idMaterias;
 
     public TurmaDTO() {
     }
@@ -23,17 +23,8 @@ public class TurmaDTO {
         this.sala = sala;
         this.codigo = codigo;
         this.ano = ano;
-        this.idAluno = idAluno;
-        this.idMateria = idMateria;
-    }
-
-    public TurmaDTO(Long id, String sala, String codigo, LocalDate ano, List<Long> idAluno, List<Long> idMateria) {
-        this.id = id;
-        this.sala = sala;
-        this.codigo = codigo;
-        this.ano = ano;
-        this.idAluno = idAluno;
-        this.idMateria = idMateria;
+        this.idAlunos = idAluno;
+        this.idMaterias = idMateria;
     }
 
     public Long getId() {
@@ -68,30 +59,29 @@ public class TurmaDTO {
         this.ano = ano;
     }
 
-    public List<Long> getIdAluno() {
-        return idAluno;
+    public List<Long> getIdAlunos() {
+        return idAlunos;
     }
 
-    public void setIdAluno(List<Long> idAluno) {
-        this.idAluno = idAluno;
+    public void setIdAlunos(List<Long> idAlunos) {
+        this.idAlunos = idAlunos;
     }
 
-    public List<Long> getIdMateria() {
-        return idMateria;
+    public List<Long> getIdMaterias() {
+        return idMaterias;
     }
 
-    public void setIdMateria(List<Long> idMateria) {
-        this.idMateria = idMateria;
+    public void setIdMaterias(List<Long> idMaterias) {
+        this.idMaterias = idMaterias;
     }
 
     public static TurmaDTO of(Turma turma){
         return new TurmaDTO(
-                turma.getId(),
                 turma.getSala(),
                 turma.getCodigo(),
                 turma.getAno(),
-                turma.getAluno().stream().map(Aluno::getId).collect(Collectors.toList()),
-                turma.getMateria().stream().map(Materia::getId).collect(Collectors.toList())
+                turma.getListAlunos().stream().map(Aluno::getId).collect(Collectors.toList()),
+                turma.getListMaterias().stream().map(Materia::getId).collect(Collectors.toList())
         );
     }
 }
