@@ -2,10 +2,8 @@ package com.faculdade.faculdade.nota;
 
 import com.faculdade.faculdade.aluno.Aluno;
 import com.faculdade.faculdade.materia.Materia;
-import com.faculdade.faculdade.professor.Professor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "nota")
@@ -13,7 +11,8 @@ public class Nota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_aluno", referencedColumnName = "id")
@@ -23,8 +22,9 @@ public class Nota {
     @JoinColumn(name = "id_materia", referencedColumnName = "id")
     private Materia materia;
 
-    @Column(name = "avaliacao")
-    private String avaliacao;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trimeste")
+    private TrimestreNota trimestre;
 
     @Column(name = "nota")
     private double nota;
@@ -33,18 +33,18 @@ public class Nota {
     public Nota() {
     }
 
-    public Nota(Aluno aluno, Materia materia, String avaliacao, double nota) {
+    public Nota(Aluno aluno, Materia materia, TrimestreNota trimestre, double nota) {
         this.aluno = aluno;
         this.materia = materia;
-        this.avaliacao = avaliacao;
+        this.trimestre = trimestre;
         this.nota = nota;
     }
 
-    public Nota(Long id, Aluno aluno, Materia materia, String avaliacao, double nota) {
+    public Nota(Long id, Aluno aluno, Materia materia, TrimestreNota trimestre, double nota) {
         this.id = id;
         this.aluno = aluno;
         this.materia = materia;
-        this.avaliacao = avaliacao;
+        this.trimestre = trimestre;
         this.nota = nota;
     }
 
@@ -72,12 +72,12 @@ public class Nota {
         this.materia = materia;
     }
 
-    public String getAvaliacao() {
-        return avaliacao;
+    public TrimestreNota getTrimestre() {
+        return trimestre;
     }
 
-    public void setAvaliacao(String avaliacao) {
-        this.avaliacao = avaliacao;
+    public void setTrimestre(TrimestreNota trimestre) {
+        this.trimestre = trimestre;
     }
 
     public double getNota() {

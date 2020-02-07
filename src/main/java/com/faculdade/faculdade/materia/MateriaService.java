@@ -1,6 +1,5 @@
 package com.faculdade.faculdade.materia;
 
-import com.faculdade.faculdade.professor.ProfessorService;
 import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,27 +13,21 @@ import java.util.Optional;
 public class MateriaService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MateriaService.class);
     private final IMateriaRepository iMateriaRepository;
-    private final ProfessorService professorService;
 
     @Autowired
-    public MateriaService(IMateriaRepository iMateriaRepository, ProfessorService professorService) {
+    public MateriaService(IMateriaRepository iMateriaRepository) {
         this.iMateriaRepository = iMateriaRepository;
-        this.professorService = professorService;
     }
 
     public Materia save(MateriaDTO materiaDTO){
         Materia materia = new Materia();
-        materia.setProfessor(professorService.findById(materiaDTO.getIdProfessor()));
         materia.setNome(materiaDTO.getNome());
-        materia.setDescricao(materiaDTO.getDescricao());
         return this.iMateriaRepository.save(materia);
     }
 
     public Materia update(MateriaDTO materiaDTO, Long id){
         Materia materia = new Materia();
-        materia.setProfessor(professorService.findById(materiaDTO.getIdProfessor()));
         materia.setNome(materiaDTO.getNome());
-        materia.setDescricao(materiaDTO.getDescricao());
 
         return this.iMateriaRepository.save(materia);
     }

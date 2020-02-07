@@ -2,12 +2,14 @@ package com.faculdade.faculdade.nota;
 
 import com.faculdade.faculdade.aluno.AlunoService;
 import com.faculdade.faculdade.materia.MateriaService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +30,11 @@ public class NotaService {
     public Nota save(NotaDTO notaDTO){
         Nota nota = new Nota();
 
+        validate(notaDTO);
+
         nota.setAluno(alunoService.findById(notaDTO.getIdAluno()));
         nota.setMateria(materiaService.findById(notaDTO.getIdMateria()));
-        nota.setAvaliacao(notaDTO.getAvaliacao());
+        nota.setTrimestre(TrimestreNota.valueOf(notaDTO.getTrimestre()));
         nota.setNota(notaDTO.getNota());
 
         return this.iNotaRepository.save(nota);
@@ -39,9 +43,11 @@ public class NotaService {
     public Nota update(NotaDTO notaDTO, Long id){
         Nota nota = new Nota();
 
+        validate(notaDTO);
+
         nota.setAluno(alunoService.findById(notaDTO.getIdAluno()));
         nota.setMateria(materiaService.findById(notaDTO.getIdMateria()));
-        nota.setAvaliacao(notaDTO.getAvaliacao());
+        nota.setTrimestre(TrimestreNota.valueOf(notaDTO.getTrimestre()));
         nota.setNota(notaDTO.getNota());
 
         return this.iNotaRepository.save(nota);
@@ -61,7 +67,20 @@ public class NotaService {
 
     }
 
+    public List<Nota> findAllByAlunoId(Long idAluno){
+        return this.iNotaRepository.findByAluno_Id(idAluno);
+    }
+
+    public List<Nota> findAllByAlunoIdAndMateriaId(Long idAluno, Long idMateria) { return this.iNotaRepository.findByAluno_IdAndMateria_Id(idAluno, idMateria); }
+
+
     public List<Nota> findAll(){
         return this.iNotaRepository.findAll();
+    }
+
+    public void validate(NotaDTO notaDTO) {
+        if (notaDTO.getNota() < 0 || notaDTO.getNota() > 10) {
+            throw new IllegalArgumentException("Nota deve estar entre 0 e 10.");
+        }
     }
 }

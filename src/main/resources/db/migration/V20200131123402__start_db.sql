@@ -9,60 +9,35 @@ email VARCHAR(50)                        NOT NULL,
 endereco VARCHAR(144)                    NOT NULL
 );
 
-CREATE TABLE faculdade
-(
-id BIGINT IDENTITY(1,1)     PRIMARY KEY NOT NULL,
-cnpj VARCHAR(14)                        NOT NULL,
-razao_social VARCHAR(50)                NOT NULL,
-endereco VARCHAR(144)                   NOT NULL,
-telefone INT                            NOT NULL
-);
-
 CREATE TABLE materia
 (
 id BIGINT IDENTITY(1,1)     PRIMARY KEY NOT NULL,
-id_professor                              BIGINT,
 nome VARCHAR(50)                        NOT NULL,
-descricao VARCHAR(255)                  NOT NULL
 );
 
-CREATE TABLE turma
+CREATE TABLE nota
+(
+id BIGINT IDENTITY(1,1)                      PRIMARY KEY NOT NULL,
+id_aluno BIGINT                  FOREIGN KEY(id_aluno) REFERENCES aluno(id),
+id_materia BIGINT              FOREIGN KEY (id_materia) REFERENCES materia(id),
+trimeste VARCHAR(2)                                      NOT NULL,
+nota DECIMAL(4,2)                                        NOT NULL,
+
+CONSTRAINT UQ_aluno_materia_trimestre UNIQUE (id_aluno, id_materia, trimeste)
+);
+
+CREATE TABLE boletim
 (
 id BIGINT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-sala VARCHAR(15)                       NOT NULL,
-codigo VARCHAR(10)                     NOT NULL,
-ano DATE                               NOT NULL
-);
+id_aluno BIGINT NOT NULL,
 
-CREATE TABLE turma_aluno
+FOREIGN KEY (id_aluno) REFERENCES aluno(id)
+)
+
+CREATE TABLE boletim_nota
 (
-id_turma BIGINT ,
-id_aluno BIGINT ,
+id_boletim BIGINT FOREIGN KEY (id_boletim) REFERENCES boletim(id),
+id_nota BIGINT FOREIGN KEY (id_nota) REFERENCES nota(id),
 
-FOREIGN KEY (id_turma) REFERENCES turma(id),
-FOREIGN KEY (id_aluno) REFERENCES aluno(id),
-
-CONSTRAINT UQ_turma_aluno UNIQUE (id_turma, id_aluno)
-);
-
-CREATE TABLE turma_materia
-(
-id_turma BIGINT,
-id_materia BIGINT,
-
-FOREIGN KEY (id_turma) REFERENCES turma(id),
-FOREIGN KEY (id_materia) REFERENCES materia(id),
-
-CONSTRAINT UQ_turma_materia UNIQUE (id_turma, id_materia)
-);
-
-CREATE TABLE professor
-(
-id BIGINT IDENTITY(1,1)    PRIMARY KEY NOT NULL,
-nome VARCHAR(50)                        NOT NULL,
-endereco VARCHAR(255),
-telefone INT                           NOT NULL,
-email VARCHAR(50)                      NOT NULL
-);
-
-
+CONSTRAINT UQ_boletim_nota UNIQUE (id_boletim, id_nota)
+)

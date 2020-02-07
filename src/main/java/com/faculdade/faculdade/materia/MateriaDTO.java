@@ -3,24 +3,18 @@ package com.faculdade.faculdade.materia;
 public class MateriaDTO {
 
     private Long id;
-    private Long idProfessor;
     private String nome;
-    private String descricao;
 
     public MateriaDTO() {
     }
 
-    public MateriaDTO(Long idProfessor, String nome, String descricao) {
-        this.idProfessor = idProfessor;
+    public MateriaDTO(String nome) {
         this.nome = nome;
-        this.descricao = descricao;
     }
 
-    public MateriaDTO(Long id, Long idProfessor, String nome, String descricao) {
+    public MateriaDTO(Long id, String nome) {
         this.id = id;
-        this.idProfessor = idProfessor;
         this.nome = nome;
-        this.descricao = descricao;
     }
 
     public Long getId() {
@@ -31,14 +25,6 @@ public class MateriaDTO {
         this.id = id;
     }
 
-    public Long getIdProfessor() {
-        return idProfessor;
-    }
-
-    public void setIdProfessor(Long idProfessor) {
-        this.idProfessor = idProfessor;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -47,20 +33,10 @@ public class MateriaDTO {
         this.nome = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
     public static MateriaDTO of(Materia materia){
         return new MateriaDTO(
                 materia.getId(),
-                materia.getProfessor().getId(),
-                materia.getNome(),
-                materia.getDescricao()
+                materia.getNome()
         );
     }
 

@@ -1,7 +1,5 @@
 package com.faculdade.faculdade.materia;
 
-import com.faculdade.faculdade.professor.Professor;
-
 import javax.persistence.*;
 
 @Entity
@@ -13,23 +11,14 @@ public class Materia {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_professor", referencedColumnName = "id")
-    private Professor professor;
-
     @Column(name = "nome")
     private String nome;
-
-    @Column(name = "descricao")
-    private String descricao;
 
     public Materia() {
     }
 
-    public Materia(Professor professor, String nome, String descricao) {
-        this.professor = professor;
+    public Materia(String nome) {
         this.nome = nome;
-        this.descricao = descricao;
     }
 
     public long getId() {
@@ -40,14 +29,6 @@ public class Materia {
         this.id = id;
     }
 
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -56,11 +37,4 @@ public class Materia {
         this.nome = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 }

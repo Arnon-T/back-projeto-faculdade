@@ -47,11 +47,16 @@ public class AlunoService {
 
     }
 
+
     public List<Aluno> findAll(){
         return this.iAlunoRepository.findAll();
     }
 
     public List<Aluno> saveAll(List<Aluno> alunos){
         return this.iAlunoRepository.saveAll(alunos);
+    }
+
+    public List<Aluno> findAllLike(String nome){
+        return this.iAlunoRepository.findAllByNomeContaining(nome);
     }
 }

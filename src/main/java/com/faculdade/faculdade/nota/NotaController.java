@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/nota")
+@CrossOrigin(origins = "*")
 public class NotaController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotaController.class);
@@ -32,14 +33,20 @@ public class NotaController {
         this.notaService.deleteById(id);
     }
 
-    @RequestMapping("/selecionar/")
+    @GetMapping("/selecionar/")
     public List<Nota> findAll(){
         return this.notaService.findAll();
     }
 
-    @RequestMapping("/selecionar/{id}")
-    public NotaDTO findById(@PathVariable("id") Long id){
-        return NotaDTO.of(this.notaService.findById(id));
+    @GetMapping("/selecionar/todos/{id}")
+    public List<Nota> findAllByAlunoId(@PathVariable("id") Long id){
+        return this.notaService.findAllByAlunoId(id);
     }
+
+    @GetMapping("/selecionar/{id}")
+    public Nota findById(@PathVariable("id") Long id){
+        return this.notaService.findById(id);
+    }
+
 
 }

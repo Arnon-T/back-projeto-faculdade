@@ -1,32 +1,28 @@
 package com.faculdade.faculdade.nota;
 
-import com.faculdade.faculdade.aluno.Aluno;
-import com.faculdade.faculdade.materia.Materia;
-import com.faculdade.faculdade.professor.Professor;
-
 public class NotaDTO {
 
     Long id;
     private Long idAluno;
     private Long idMateria;
-    private String avaliacao;
+    private String trimestre;
     private double nota;
 
     public NotaDTO() {
     }
 
-    public NotaDTO(Long idAluno, Long idMateria, String avaliacao, double nota) {
+    public NotaDTO(Long idAluno, Long idMateria, String trimestre, double nota) {
         this.idAluno = idAluno;
         this.idMateria = idMateria;
-        this.avaliacao = avaliacao;
+        this.trimestre = trimestre;
         this.nota = nota;
     }
 
-    public NotaDTO(Long id, Long idAluno, Long idMateria, String avaliacao, double nota) {
+    public NotaDTO(Long id, Long idAluno, Long idMateria, String trimestre, double nota) {
         this.id = id;
         this.idAluno = idAluno;
         this.idMateria = idMateria;
-        this.avaliacao = avaliacao;
+        this.trimestre = trimestre;
         this.nota = nota;
     }
 
@@ -54,12 +50,12 @@ public class NotaDTO {
         this.idMateria = idMateria;
     }
 
-    public String getAvaliacao() {
-        return avaliacao;
+    public String getTrimestre() {
+        return trimestre;
     }
 
-    public void setAvaliacao(String avaliacao) {
-        this.avaliacao = avaliacao;
+    public void setTrimestre(String trimestre) {
+        this.trimestre = trimestre;
     }
 
     public double getNota() {
@@ -75,7 +71,7 @@ public class NotaDTO {
                 nota.getId(),
                 nota.getAluno().getId(),
                 nota.getMateria().getId(),
-                nota.getAvaliacao(),
+                nota.getTrimestre().getDescricao(),
                 nota.getNota()
         );
     }

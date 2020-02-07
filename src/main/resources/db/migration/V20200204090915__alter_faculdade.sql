@@ -1,2 +1,0 @@
-ALTER TABLE faculdade DROP COLUMN cnpj;
-ALTER TABLE faculdade ADD cnpj VARCHAR(14) NOT NULL;

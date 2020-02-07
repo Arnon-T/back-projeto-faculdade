@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/aluno")
+@CrossOrigin(origins = "*")
 public class AlunoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlunoController.class);
@@ -32,14 +33,20 @@ public class AlunoController {
         this.alunoService.deleteById(id);
     }
 
-    @RequestMapping("/selecionar/")
+    @GetMapping("/selecionar/")
     public List<Aluno> findAll(){
         return this.alunoService.findAll();
     }
 
-    @RequestMapping("/selecionar/{id}")
+    @GetMapping("/selecionar/{id}")
     public AlunoDTO findById(@PathVariable("id") Long id){
         return AlunoDTO.of(this.alunoService.findById(id));
+    }
+
+    @GetMapping("selecionar/busca/{nome}")
+    public List<Aluno> findAllLike(@PathVariable("nome") String nome){
+        List<Aluno> alunos = this.alunoService.findAllLike(nome);
+        return this.alunoService.findAllLike(nome);
     }
 
 }
