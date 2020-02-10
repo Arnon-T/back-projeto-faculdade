@@ -23,19 +23,24 @@ public class Boletim {
     @JoinColumn(name = "id_aluno", referencedColumnName = "id")
     private Aluno aluno;
 
+    @Column(name = "ano")
+    private String ano;
+
 
     public Boletim() {
     }
 
-    public Boletim(List<Nota> notaList, Aluno aluno) {
+    public Boletim(List<Nota> notaList, Aluno aluno, String ano) {
         this.notaList = notaList;
         this.aluno = aluno;
+        this.ano = ano;
     }
 
-    public Boletim(Long id, List<Nota> notaList, Aluno aluno) {
+    public Boletim(Long id, List<Nota> notaList, Aluno aluno, String ano) {
         this.id = id;
         this.notaList = notaList;
         this.aluno = aluno;
+        this.ano = ano;
     }
 
     public Long getId() {
@@ -60,5 +65,13 @@ public class Boletim {
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
+    }
+
+    public String getAno() {
+        return ano;
+    }
+
+    public void setAno(String ano) {
+        this.ano = ano;
     }
 }

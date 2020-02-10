@@ -45,6 +45,7 @@ public class NotaService {
 
         validate(notaDTO);
 
+        nota.setId(notaDTO.id);
         nota.setAluno(alunoService.findById(notaDTO.getIdAluno()));
         nota.setMateria(materiaService.findById(notaDTO.getIdMateria()));
         nota.setTrimestre(TrimestreNota.valueOf(notaDTO.getTrimestre()));

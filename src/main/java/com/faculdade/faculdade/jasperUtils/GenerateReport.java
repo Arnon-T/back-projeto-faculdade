@@ -10,7 +10,8 @@ import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +25,13 @@ public class GenerateReport {
         this.boletimModelService = boletimModelService;
     }
 
-    public String exportReport(String aluno, String ano, HttpServletResponse response) throws FileNotFoundException, JRException {
+    public void exportReport(String aluno, String ano, HttpServletResponse response) throws IOException, JRException {
         List<BoletimModel> listBoletim = this.boletimModelService.findAllByAlunoAndAno(aluno, ano);
 
-        response.setContentType("text/csv");
+        response.setContentType("application/pdf");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + "boletim" + "\"" + ".pdf");
-
+                "attachment; filename=\"" + "boletim" + "\"");
+        OutputStream out = response.getOutputStream();
         File file = ResourceUtils.getFile("classpath:boletim.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 
@@ -41,7 +42,6 @@ public class GenerateReport {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
-
-        return "Relatório gerado no diretório C:\\Users\\arnon.silva\\Downloads\\boletim.pdf:";
+        JasperExportManager.exportReportToPdfStream(jasperPrint, out);
 }
 }

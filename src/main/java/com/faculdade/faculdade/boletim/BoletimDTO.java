@@ -11,18 +11,22 @@ public class BoletimDTO {
 
     private Long idAluno;
 
+    private String ano;
+
     public BoletimDTO() {
     }
 
-    public BoletimDTO(List<Long> idNotas, Long idAluno) {
+    public BoletimDTO(List<Long> idNotas, Long idAluno, String ano) {
         this.idNotas = idNotas;
         this.idAluno = idAluno;
+        this.ano = ano;
     }
 
-    public BoletimDTO(Long id, List<Long> idNotas, Long idAluno) {
+    public BoletimDTO(Long id, List<Long> idNotas, Long idAluno, String ano) {
         this.id = id;
         this.idNotas = idNotas;
         this.idAluno = idAluno;
+        this.ano = ano;
     }
 
     public Long getId() {
@@ -49,13 +53,22 @@ public class BoletimDTO {
         this.idAluno = idAluno;
     }
 
+    public String getAno() {
+        return ano;
+    }
+
+    public void setAno(String ano) {
+        this.ano = ano;
+    }
+
     public static BoletimDTO of(Boletim boletim){
         List<Long> listIdNota = new ArrayList<>();
 
         boletim.getNotaList().forEach(nota -> listIdNota.add(nota.getId()));
         return new BoletimDTO(
                 listIdNota,
-                boletim.getAluno().getId()
+                boletim.getAluno().getId(),
+                boletim.getAno()
         );
     }
 }

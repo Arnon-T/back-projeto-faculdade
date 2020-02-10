@@ -9,12 +9,12 @@ import com.faculdade.faculdade.materia.Materia;
 import com.faculdade.faculdade.materia.MateriaService;
 import com.faculdade.faculdade.nota.Nota;
 import com.faculdade.faculdade.nota.NotaService;
-import net.sf.jasperreports.engine.JRException;
+import com.sun.media.jfxmedia.logging.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.List;
 @Service
 public class BoletimService {
 
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BoletimService.class);
     private final IBoletimRepository iBoletimRepository;
     private final NotaService notaService;
     private final AlunoService alunoService;
@@ -42,23 +43,25 @@ public class BoletimService {
     }
 
     @Transactional
-    public Boletim save(BoletimDTO boletimDTO){
+    public Boletim save(BoletimDTO boletimDTO) {
         Boletim boletim = new Boletim();
         List<Nota> notaOptional = new ArrayList<>();
 
         boletimDTO.getIdNotas().forEach(idNota -> notaOptional.add(this.notaService.findById(idNota)));
         boletim.setNotaList(notaOptional);
         boletim.setAluno(this.alunoService.findById(boletimDTO.getIdAluno()));
+        boletim.setAno(boletimDTO.getAno());
 
         return this.iBoletimRepository.save(boletim);
     }
 
-    public Boletim generate(Long idAluno, String ano) throws FileNotFoundException, JRException {
+    public Boletim generate(Long idAluno, String ano) {
         Boletim boletim = new Boletim();
         List<Nota> listNota = this.notaService.findAllByAlunoId(idAluno);
         Aluno aluno = this.alunoService.findById(idAluno);
         boletim.setNotaList(listNota);
         boletim.setAluno(aluno);
+        boletim.setAno(ano);
         BoletimDTO boletimDTO = BoletimDTO.of(boletim);
         save(boletimDTO);
 
@@ -84,23 +87,24 @@ public class BoletimService {
             boletimModel.setNota2(String.valueOf(notaSeparada[1]));
             boletimModel.setNota3(String.valueOf(notaSeparada[2]));
             boletimModel.setNota4(String.valueOf(notaSeparada[3]));
-            boletimModel.setMedia(String.valueOf(df.format(media/4)));
+            boletimModel.setMedia(String.valueOf(df.format(media / 4)));
 
             listModel.add(boletimModel);
         }
         this.boletimModelService.saveAll(listModel);
+
         return boletim;
     }
 
-    public void deleteBoletim(Long idAluno, String ano){
+    @Transactional
+    public void deleteBoletim(Long idAluno, String ano) {
         Aluno aluno = this.alunoService.findById(idAluno);
         this.boletimModelService.deleteAllByNomeAndAno(aluno.getNome(), ano);
         this.iBoletimRepository.deleteAllByAluno_Id(idAluno);
     }
 
-    public Boletim findByAlunoId(Long idAluno){
+    public Boletim findByAlunoId(Long idAluno) {
         return this.iBoletimRepository.findByAluno_Id(idAluno);
     }
-
 
 }

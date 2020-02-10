@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("api/boletim")
+@CrossOrigin(origins = "*")
 public class BoletimController {
 
     private final BoletimService boletimService;
@@ -22,13 +23,13 @@ public class BoletimController {
     }
 
     @PostMapping("/gerar/{id}/{ano}")
-    public Boletim generate(@PathVariable("id") Long id, @PathVariable("ano") String ano) throws FileNotFoundException, JRException {
+    public Boletim generate(@PathVariable("id") Long id, @PathVariable("ano") String ano) {
         return this.boletimService.generate(id, ano);
     }
 
     @GetMapping("/export/{aluno}/{ano}")
-    public String export(@PathVariable("aluno") String aluno, @PathVariable("ano") String ano, HttpServletResponse response) throws FileNotFoundException, JRException {
-        return this.generateReport.exportReport(aluno, ano, response);
+    public void export(@PathVariable("aluno") String aluno, @PathVariable("ano") String ano, HttpServletResponse response) throws IOException, JRException {
+        this.generateReport.exportReport(aluno, ano, response);
     }
 
     @GetMapping("/{idAluno}")
