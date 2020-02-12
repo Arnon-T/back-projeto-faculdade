@@ -1,6 +1,6 @@
 package com.faculdade.faculdade.aluno;
 
-import com.faculdade.faculdade.materia.Materia;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,19 @@ public class AlunoService {
     @Autowired
     public AlunoService(IAlunoRepository iAlunoRepository) { this.iAlunoRepository = iAlunoRepository; }
 
-    public Aluno save(AlunoDTO alunoDTO){
+    public Aluno save(AlunoDTO alunoDTO) throws TelefoneInvalidoException {
+
+        this.validate(alunoDTO);
+
         return this.iAlunoRepository.save(new Aluno(alunoDTO.getNome(), alunoDTO.getTelefone(), alunoDTO.getEmail(), alunoDTO.getEndereco()));
     }
 
-    public Aluno update(AlunoDTO alunoDTO, Long id){
+    public Aluno update(AlunoDTO alunoDTO, Long id) throws TelefoneInvalidoException {
+
+        this.validate(alunoDTO);
+
         Aluno aluno = new Aluno();
+
         aluno.setId(id);
         aluno.setNome(alunoDTO.getNome());
         aluno.setEmail(alunoDTO.getEmail());
@@ -47,16 +54,37 @@ public class AlunoService {
 
     }
 
-
     public List<Aluno> findAll(){
         return this.iAlunoRepository.findAll();
     }
 
-    public List<Aluno> saveAll(List<Aluno> alunos){
-        return this.iAlunoRepository.saveAll(alunos);
+    public List<Aluno> findAllLike(String nome) throws AlunoNaoEncontradoException {
+        Optional<List<Aluno>> optionalAlunoList = this.iAlunoRepository.findAllByNomeContaining(nome);
+
+        if(optionalAlunoList.isPresent()){
+            return optionalAlunoList.get();
+        }
+        throw new AlunoNaoEncontradoException("Não foi possível localizar nenhum aluno.");
     }
 
-    public List<Aluno> findAllLike(String nome){
-        return this.iAlunoRepository.findAllByNomeContaining(nome);
+    private void validate(AlunoDTO alunoDTO) throws TelefoneInvalidoException {
+        LOGGER.info("Validando aluno.");
+
+        if (StringUtils.isEmpty(alunoDTO.getNome())) {
+            throw new IllegalArgumentException("Nome não pode ser nulo.");
+        }
+        if (StringUtils.isEmpty(alunoDTO.getEmail())) {
+            throw new IllegalArgumentException("E-mail não pode ser nulo.");
+        }
+        if (StringUtils.isEmpty(alunoDTO.getEndereco())) {
+            throw new IllegalArgumentException("Endereço não pode ser nulo");
+        }
+        if (StringUtils.isEmpty(String.valueOf(alunoDTO.getTelefone()))) {
+            throw new IllegalArgumentException("Telefone não pode ser nulo.");
+        }
+        if (String.valueOf(alunoDTO.getTelefone()).length() < 10 || String.valueOf(alunoDTO.getTelefone()).length() > 11) {
+            throw new TelefoneInvalidoException("Telefone informado é inválido");
+        }
     }
+
 }

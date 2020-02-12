@@ -1,6 +1,7 @@
 package com.faculdade.faculdade.boletim;
 
-import com.faculdade.faculdade.jasperUtils.GenerateReport;
+import com.faculdade.faculdade.jasperutils.GenerateReport;
+import com.faculdade.faculdade.nota.NotaNaoEncontradaException;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class BoletimController {
     }
 
     @PostMapping("/gerar/{id}/{ano}")
-    public Boletim generate(@PathVariable("id") Long id, @PathVariable("ano") String ano) {
+    public Boletim generate(@PathVariable("id") Long id, @PathVariable("ano") String ano) throws NotaNaoEncontradaException, InvalidListNotasException {
         return this.boletimService.generate(id, ano);
     }
 
@@ -33,7 +34,7 @@ public class BoletimController {
     }
 
     @GetMapping("/{idAluno}")
-    public Boletim buscaporaluno(@PathVariable("idAluno") Long idAluno){
+    public Boletim buscaporaluno(@PathVariable("idAluno") Long idAluno) throws BoletimNaoEncontradoException {
         return this.boletimService.findByAlunoId(idAluno);
     }
 

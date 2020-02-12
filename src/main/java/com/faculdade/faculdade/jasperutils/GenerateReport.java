@@ -1,7 +1,7 @@
-package com.faculdade.faculdade.jasperUtils;
+package com.faculdade.faculdade.jasperutils;
 
-import com.faculdade.faculdade.boletimModel.BoletimModel;
-import com.faculdade.faculdade.boletimModel.BoletimModelService;
+import com.faculdade.faculdade.boletimmodel.BoletimModel;
+import com.faculdade.faculdade.boletimmodel.BoletimModelService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.http.HttpHeaders;

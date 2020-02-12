@@ -2,20 +2,16 @@ package com.faculdade.faculdade.nota;
 
 import com.faculdade.faculdade.aluno.AlunoService;
 import com.faculdade.faculdade.materia.MateriaService;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ObjectNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class NotaService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotaService.class);
+
     private final INotaRepository iNotaRepository;
     private final AlunoService alunoService;
     private final MateriaService materiaService;
@@ -35,12 +31,12 @@ public class NotaService {
         nota.setAluno(alunoService.findById(notaDTO.getIdAluno()));
         nota.setMateria(materiaService.findById(notaDTO.getIdMateria()));
         nota.setTrimestre(TrimestreNota.valueOf(notaDTO.getTrimestre()));
-        nota.setNota(notaDTO.getNota());
+        nota.setValorNota(notaDTO.getNota());
 
         return this.iNotaRepository.save(nota);
     }
 
-    public Nota update(NotaDTO notaDTO, Long id){
+    public Nota update(NotaDTO notaDTO){
         Nota nota = new Nota();
 
         validate(notaDTO);
@@ -49,7 +45,7 @@ public class NotaService {
         nota.setAluno(alunoService.findById(notaDTO.getIdAluno()));
         nota.setMateria(materiaService.findById(notaDTO.getIdMateria()));
         nota.setTrimestre(TrimestreNota.valueOf(notaDTO.getTrimestre()));
-        nota.setNota(notaDTO.getNota());
+        nota.setValorNota(notaDTO.getNota());
 
         return this.iNotaRepository.save(nota);
     }
@@ -68,11 +64,13 @@ public class NotaService {
 
     }
 
-    public List<Nota> findAllByAlunoId(Long idAluno){
-        return this.iNotaRepository.findByAluno_Id(idAluno);
+    public List<Nota> findAllByAlunoId(Long idAluno) throws NotaNaoEncontradaException {
+        return this.iNotaRepository.findByAluno_Id(idAluno).orElseThrow(() -> new NotaNaoEncontradaException("Nao foi possível localizar as notas do Aluno com ID : " + idAluno) );
     }
 
-    public List<Nota> findAllByAlunoIdAndMateriaId(Long idAluno, Long idMateria) { return this.iNotaRepository.findByAluno_IdAndMateria_Id(idAluno, idMateria); }
+    public List<Nota> findAllByAlunoIdAndMateriaId(Long idAluno, Long idMateria) throws NotaNaoEncontradaException {
+        return this.iNotaRepository.findByAluno_IdAndMateria_Id(idAluno, idMateria).orElseThrow(() -> new NotaNaoEncontradaException("Não foi possível localizar as notas da matéria de ID: " + idMateria + "para o aluno de ID: " + idAluno));
+    }
 
 
     public List<Nota> findAll(){

@@ -2,14 +2,14 @@ package com.faculdade.faculdade.boletim;
 
 import com.faculdade.faculdade.aluno.Aluno;
 import com.faculdade.faculdade.aluno.AlunoService;
-import com.faculdade.faculdade.boletimModel.BoletimModel;
-import com.faculdade.faculdade.boletimModel.BoletimModelService;
-import com.faculdade.faculdade.jasperUtils.GenerateReport;
+import com.faculdade.faculdade.boletimmodel.BoletimModel;
+import com.faculdade.faculdade.boletimmodel.BoletimModelService;
 import com.faculdade.faculdade.materia.Materia;
 import com.faculdade.faculdade.materia.MateriaService;
 import com.faculdade.faculdade.nota.Nota;
+import com.faculdade.faculdade.nota.NotaNaoEncontradaException;
 import com.faculdade.faculdade.nota.NotaService;
-import com.sun.media.jfxmedia.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,17 +29,15 @@ public class BoletimService {
     private final AlunoService alunoService;
     private final MateriaService materiaService;
     private final BoletimModelService boletimModelService;
-    private final GenerateReport generateReport;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
     @Autowired
-    public BoletimService(IBoletimRepository iBoletimRepository, NotaService notaService, AlunoService alunoService, MateriaService materiaService, BoletimModelService boletimModelService, GenerateReport generateReport) {
+    public BoletimService(IBoletimRepository iBoletimRepository, NotaService notaService, AlunoService alunoService, MateriaService materiaService, BoletimModelService boletimModelService) {
         this.iBoletimRepository = iBoletimRepository;
         this.notaService = notaService;
         this.alunoService = alunoService;
         this.materiaService = materiaService;
         this.boletimModelService = boletimModelService;
-        this.generateReport = generateReport;
     }
 
     @Transactional
@@ -55,15 +53,26 @@ public class BoletimService {
         return this.iBoletimRepository.save(boletim);
     }
 
-    public Boletim generate(Long idAluno, String ano) {
+    @Transactional
+    public Boletim generate(Long idAluno, String ano) throws InvalidListNotasException, NotaNaoEncontradaException {
         Boletim boletim = new Boletim();
         List<Nota> listNota = this.notaService.findAllByAlunoId(idAluno);
+
         Aluno aluno = this.alunoService.findById(idAluno);
+
         boletim.setNotaList(listNota);
         boletim.setAluno(aluno);
         boletim.setAno(ano);
         BoletimDTO boletimDTO = BoletimDTO.of(boletim);
-        save(boletimDTO);
+
+        this.validate(boletimDTO);
+
+        try {
+            this.save(boletimDTO);
+        } catch (Exception e) {
+            LOGGER.info("Não foi possível salvar nota");
+            LOGGER.debug("Error -> []", e);
+        }
 
         List<BoletimModel> listModel = new ArrayList<>();
         List<Materia> materias = this.materiaService.findAll();
@@ -79,8 +88,8 @@ public class BoletimService {
             double[] notaSeparada = new double[4];
             int j = 0;
             for (Nota nota : notas) {
-                media += nota.getNota();
-                notaSeparada[j] = nota.getNota();
+                media += nota.getValorNota();
+                notaSeparada[j] = nota.getValorNota();
                 j++;
             }
             boletimModel.setNota1(String.valueOf(notaSeparada[0]));
@@ -103,8 +112,23 @@ public class BoletimService {
         this.iBoletimRepository.deleteAllByAluno_Id(idAluno);
     }
 
-    public Boletim findByAlunoId(Long idAluno) {
-        return this.iBoletimRepository.findByAluno_Id(idAluno);
+    public Boletim findByAlunoId(Long idAluno) throws BoletimNaoEncontradoException {
+        return this.iBoletimRepository.findByAluno_Id(idAluno).orElseThrow(() -> new BoletimNaoEncontradoException("Boletim do aluno de ID: " + idAluno + " nao encontrado."));
+    }
+
+    private void validate(BoletimDTO boletimDTO) throws InvalidListNotasException {
+        LOGGER.info("Validando boletim.");
+
+        if (boletimDTO.getIdNotas().size() != 28) {
+            throw new InvalidListNotasException("Todas as notas devem estar cadastradas.");
+        }
+        if (StringUtils.isEmpty(String.valueOf(boletimDTO.getIdAluno()))) {
+            throw new IllegalArgumentException("Aluno não pode ser nulo.");
+        }
+        if (StringUtils.isEmpty(boletimDTO.getAno())) {
+            throw new IllegalArgumentException("Ano não pode ser nulo.");
+        }
+
     }
 
 }

@@ -16,7 +16,7 @@ public class Aluno {
     private String nome;
 
     @Column(name = "telefone")
-    private int telefone;
+    private long telefone;
 
     @Email
     @Column(name= "email")
@@ -28,14 +28,14 @@ public class Aluno {
     public Aluno() {
     }
 
-    public Aluno(String nome, int telefone, String email, String endereco) {
+    public Aluno(String nome, long telefone, String email, String endereco) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
     }
 
-    public Aluno(long id, String nome, int telefone, String email, String endereco) {
+    public Aluno(long id, String nome, long telefone, String email, String endereco) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -59,11 +59,11 @@ public class Aluno {
         this.nome = nome;
     }
 
-    public int getTelefone() {
+    public long getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(int telefone) {
+    public void setTelefone(long telefone) {
         this.telefone = telefone;
     }
 

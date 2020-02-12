@@ -27,25 +27,25 @@ public class Nota {
     private TrimestreNota trimestre;
 
     @Column(name = "nota")
-    private double nota;
+    private double valorNota;
 
 
     public Nota() {
     }
 
-    public Nota(Aluno aluno, Materia materia, TrimestreNota trimestre, double nota) {
+    public Nota(Aluno aluno, Materia materia, TrimestreNota trimestre, double valorNota) {
         this.aluno = aluno;
         this.materia = materia;
         this.trimestre = trimestre;
-        this.nota = nota;
+        this.valorNota = valorNota;
     }
 
-    public Nota(Long id, Aluno aluno, Materia materia, TrimestreNota trimestre, double nota) {
+    public Nota(Long id, Aluno aluno, Materia materia, TrimestreNota trimestre, double valorNota) {
         this.id = id;
         this.aluno = aluno;
         this.materia = materia;
         this.trimestre = trimestre;
-        this.nota = nota;
+        this.valorNota = valorNota;
     }
 
     public Long getId() {
@@ -80,11 +80,11 @@ public class Nota {
         this.trimestre = trimestre;
     }
 
-    public double getNota() {
-        return nota;
+    public double getValorNota() {
+        return valorNota;
     }
 
-    public void setNota(double nota) {
-        this.nota = nota;
+    public void setValorNota(double valorNota) {
+        this.valorNota = valorNota;
     }
 }

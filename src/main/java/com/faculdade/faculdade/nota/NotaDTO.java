@@ -72,7 +72,7 @@ public class NotaDTO {
                 nota.getAluno().getId(),
                 nota.getMateria().getId(),
                 nota.getTrimestre().getDescricao(),
-                nota.getNota()
+                nota.getValorNota()
         );
     }
 }

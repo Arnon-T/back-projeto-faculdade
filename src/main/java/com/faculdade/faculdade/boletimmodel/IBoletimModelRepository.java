@@ -1,4 +1,4 @@
-package com.faculdade.faculdade.boletimModel;
+package com.faculdade.faculdade.boletimmodel;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

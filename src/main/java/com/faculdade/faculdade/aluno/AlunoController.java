@@ -1,7 +1,5 @@
 package com.faculdade.faculdade.aluno;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +10,18 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class AlunoController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AlunoController.class);
     private final AlunoService alunoService;
 
     @Autowired
     public AlunoController(AlunoService alunoService) { this.alunoService = alunoService; }
 
     @PostMapping("/cadastrar")
-    public AlunoDTO save(@RequestBody AlunoDTO alunoDTO){
+    public AlunoDTO save(@RequestBody AlunoDTO alunoDTO) throws TelefoneInvalidoException {
         return AlunoDTO.of(this.alunoService.save(alunoDTO));
     }
 
     @PutMapping("/atualizar/{id}")
-    public AlunoDTO update(@RequestBody AlunoDTO alunoDTO, @PathVariable("id") Long id){
+    public AlunoDTO update(@RequestBody AlunoDTO alunoDTO, @PathVariable("id") Long id) throws TelefoneInvalidoException {
         return AlunoDTO.of(this.alunoService.update(alunoDTO, id));
     }
 
@@ -44,8 +41,7 @@ public class AlunoController {
     }
 
     @GetMapping("selecionar/busca/{nome}")
-    public List<Aluno> findAllLike(@PathVariable("nome") String nome){
-        List<Aluno> alunos = this.alunoService.findAllLike(nome);
+    public List<Aluno> findAllLike(@PathVariable("nome") String nome) throws AlunoNaoEncontradoException {
         return this.alunoService.findAllLike(nome);
     }
 

@@ -1,4 +1,4 @@
-package com.faculdade.faculdade.boletimModel;
+package com.faculdade.faculdade.boletimmodel;
 
 import javax.persistence.*;
 
@@ -45,7 +45,6 @@ public class BoletimModel {
         this.nota3 = nota3;
         this.nota4 = nota4;
         this.media = media;
-
     }
 
     public Long getId() {
